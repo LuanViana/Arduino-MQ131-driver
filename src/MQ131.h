@@ -35,7 +35,7 @@
 
 // Default values
 #define MQ131_DEFAULT_RL                            1000000           // Default load resistance of 1MOhms
-#define MQ131_DEFAULT_STABLE_CYCLE                  15                // Number of cycles with low deviation to consider
+#define MQ131_DEFAULT_STABLE_CYCLE                  5                // Number of cycles with low deviation to consider
                                                                       // the calibration as stable and reliable
 #define MQ131_DEFAULT_TEMPERATURE_CELSIUS           20                // Default temperature to correct environmental drift
 #define MQ131_DEFAULT_HUMIDITY_PERCENT              65                // Default humidity to correct environmental drift
