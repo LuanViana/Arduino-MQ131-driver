@@ -54,7 +54,7 @@ class MQ131Class {
     virtual ~MQ131Class();
   
 		// Initialize the driver
-		void begin(uint8_t _pinPower, uint8_t _pinSensor, MQ131Model _model, uint32_t _RL, Stream* _debugStream = NULL);
+		void begin(uint8_t _pinSensor, MQ131Model _model, uint32_t _RL, Stream* _debugStream = NULL);
 
 		// Manage a full cycle with delay() without giving the hand back to
 		// the main loop (delay() function included)
@@ -91,9 +91,7 @@ class MQ131Class {
 	private:
     		// Internal helpers
 		// Internal function to manage the heater
-		void startHeater();
 		bool isTimeToRead();
-		void stopHeater();
 
 		// Internal reading function of Rs
 		float readRs();
@@ -113,7 +111,6 @@ class MQ131Class {
     		bool enableDebug = false;
 
 		// Details about the circuit: pins and load resistance value
-		uint8_t pinPower = -1;
 		uint8_t pinSensor = -1;
 		uint32_t valueRL = -1;
 
