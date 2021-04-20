@@ -86,10 +86,12 @@ MQ131Class::~MQ131Class() {
  * of the read cycle!
  */
  void MQ131Class::sample() {
- 	while(!isTimeToRead()) {
- 		delay(1000);
- 	}
- 	lastValueRs = readRs();
+ 	float value = 0;
+  for(int i = 0, i < 40, i++) {
+    value = value + readRs();
+    delay(2);
+  }
+ 	lastValueRs = value/40;
  }
 
 /**
