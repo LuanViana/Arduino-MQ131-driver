@@ -46,7 +46,7 @@ MQ131Class::~MQ131Class() {
 /**
  * Init core variables
  */
- void MQ131Class::begin(uint8_t _pinPower, uint8_t _pinSensor, MQ131Model _model, uint32_t _RL, Stream* _debugStream) { 
+ void MQ131Class::begin(uint8_t _pinSensor, MQ131Model _model, uint32_t _RL, Stream* _debugStream) { 
   // Define if debug is requested
   enableDebug = _debugStream != NULL;
   debugStream = _debugStream;
@@ -55,7 +55,6 @@ MQ131Class::~MQ131Class() {
  	model = _model;
 
  	// Store the circuit info (pin and load resistance)
- 	pinPower = _pinPower;
  	pinSensor = _pinSensor;
  	valueRL = _RL;
 
@@ -77,11 +76,8 @@ MQ131Class::~MQ131Class() {
   }
 
  	// Setup pin mode
- 	pinMode(pinPower, OUTPUT);
  	pinMode(pinSensor, INPUT);
 
-  // Switch off the heater as default status
-  digitalWrite(pinPower, LOW);
  }
 
 /**
@@ -90,20 +86,10 @@ MQ131Class::~MQ131Class() {
  * of the read cycle!
  */
  void MQ131Class::sample() {
- 	startHeater();
  	while(!isTimeToRead()) {
  		delay(1000);
  	}
  	lastValueRs = readRs();
- 	stopHeater();
- }
-
-/**
- * Start the heater
- */
- void MQ131Class::startHeater() {
- 	digitalWrite(pinPower, HIGH);
- 	secLastStart = millis()/1000;
  }
 
 /**
@@ -120,14 +106,6 @@ MQ131Class::~MQ131Class() {
  	}
  	return false;
  } 
-
-/**
- * Stop the heater
- */
- void MQ131Class::stopHeater() {
- 	digitalWrite(pinPower, LOW);
- 	secLastStart = -1;
- }
 
 /**
  * Get parameter time to read
@@ -303,9 +281,6 @@ void MQ131Class::calibrate() {
     debugStream->println(F(" (compilation parameter MQ131_DEFAULT_STABLE_CYCLE)"));
   }
 
-  // Start heater
-  startHeater();
-
   uint8_t timeToReadConsistency = MQ131_DEFAULT_STABLE_CYCLE;
 
   while(countReadInRow <= timeToReadConsistency) {
@@ -334,9 +309,6 @@ void MQ131Class::calibrate() {
     debugStream->println(F(" seconds"));
     debugStream->println(F("MQ131 : Stop heater and store calibration parameters"));
   }
-
-  // Stop heater
-  stopHeater();
 
   // We have our R0 and our time to read
   setR0(lastRsValue);
