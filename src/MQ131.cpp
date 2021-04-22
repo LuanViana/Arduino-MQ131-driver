@@ -87,11 +87,11 @@ MQ131Class::~MQ131Class() {
  */
  void MQ131Class::sample() {
  	float value = 0;
-  for(int i = 0; i < 40; i++) {
+  for(int i = 0; i < 50; i++) {
     value = value + readRs();
-    delay(2);
+    delay(10);
   }
- 	lastValueRs = value/40;
+ 	lastValueRs = value/50;
  }
 
 /**
